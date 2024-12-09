@@ -1,11 +1,13 @@
-import { View, Text, ActivityIndicator } from 'react-native'
 import React from 'react'
+import { View, Text, ActivityIndicator, ScrollView } from 'react-native'
 import { useMovies } from '@/src/presentation/hooks/useMovies'
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
+import MainSlideShow from '@/src/presentation/components/movies/MainSlideShow'
+import MovieHorizontal from '@/src/presentation/components/movies/MovieHorizontal'
 
 const HomeScreen = () => {
     const safeArea = useSafeAreaInsets()
-    const { nowPlayingQuery } = useMovies()
+    const { nowPlayingQuery, popularQuery, topRatedQuery, upcomingQuery } = useMovies()
 
     if (nowPlayingQuery.isLoading) {
         return (
@@ -16,10 +18,19 @@ const HomeScreen = () => {
     }
 
     return (
-        <View className='mt-2' style={{paddingTop: safeArea.top}}>
-            <Text className='text-3xl font-bold px-4 mb-2'>HomeScreen</Text>
-            <Text>{JSON.stringify(nowPlayingQuery.data)}</Text>
-        </View>
+        <ScrollView>
+            <View className='mt-2 pb-10' style={{ paddingTop: safeArea.top }}>
+                <Text className='text-3xl font-bold px-4 mb-2'>Movies App</Text>
+
+                <MainSlideShow movies={nowPlayingQuery.data ?? []}></MainSlideShow>
+
+                <MovieHorizontal title='Populars' movies={popularQuery.data ?? []} className='mb-5'></MovieHorizontal>
+
+                <MovieHorizontal title='Top Rated' movies={topRatedQuery.data ?? []} className='mb-5'></MovieHorizontal>
+
+                <MovieHorizontal title='Upcomming' movies={upcomingQuery.data ?? []} className='mb-5'></MovieHorizontal>
+            </View>
+        </ScrollView>
     )
 }
 
