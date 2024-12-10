@@ -27,7 +27,7 @@ const MovieCard = ({ movie, onPress }: Props) => {
                         resizeMode: 'cover',
                         // position: 'absolute'
                     }}
-                // defaultSource={require('@/assets/placeholder.png')}
+                    defaultSource={require('@/src/assets/loaders/bottle-loader.gif')}
                 ></Image>
 
                 {/* Overlay gradiente superior */}
@@ -55,7 +55,7 @@ const MovieCard = ({ movie, onPress }: Props) => {
                 <View className='absolute top-3 right-3 bg-yellow-500 rounded-xl px-3 py-1.5 flex-row items-center'>
                     <Ionicons name="star" size={18} color="white" />
                     <Text className='text-white font-bold ml-1 text-base'>
-                        10
+                        {movie.rating}
                     </Text>
                 </View>
 
@@ -66,12 +66,12 @@ const MovieCard = ({ movie, onPress }: Props) => {
                 </View>
 
 
-                <View className='absolute bottom-24 left-3 bg-gray-800/80 rounded-xl px-3 py-1.5 flex-row items-center'>
+                {/* <View className='absolute bottom-24 left-3 bg-gray-800/80 rounded-xl px-3 py-1.5 flex-row items-center'>
                     <Ionicons name="time-outline" size={16} color="white" />
                     <Text className='text-white font-semibold ml-1'>
                         {`${30} min`}
                     </Text>
-                </View>
+                </View> */}
 
                 <View className='absolute bottom-4 left-4 right-4'>
                     <Text className='text-white font-bold text-xl mb-2' numberOfLines={2}>

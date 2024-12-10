@@ -5,10 +5,10 @@ import { MovieService } from "@/src/infrastructure/services/MovieService";
 
 const movieRepository = new MovieRepositoryImpl(new MovieService());
 
-export const useGetTopMovies = () => {
+export const useGetPopularMovies = () => {
   return useQuery<Movie[], Error>({
-    queryKey: ["movies", "topMovies"],
-    queryFn: movieRepository.getTopRatedMovies,
+    queryKey: ["movies", "popular"],
+    queryFn: movieRepository.getPopularMovies,
     staleTime: 1000 * 60 * 60 * 24, // 24 hours
   });
 };

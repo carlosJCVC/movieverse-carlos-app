@@ -1,16 +1,20 @@
-import React from 'react'
-import { View, Text, ActivityIndicator, ScrollView } from 'react-native'
-import { useMovies } from '@/src/presentation/hooks/useMovies'
+import { View, Text, ActivityIndicator, ScrollView, Pressable } from 'react-native'
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
-import MainSlideShow from '@/src/presentation/components/movies/MainSlideShow'
 import MovieHorizontal from '@/src/presentation/components/movies/MovieHorizontal'
-import MovieList from '@/src/presentation/components/movies/MovieList'
+import MainMovieCarousel from '@/src/presentation/components/movies/MainMovieCarousel'
+import { useGetTopMovies } from '@/src/domain/usecases/GetTopMovies'
+import { useGetUpcomingMovies } from '@/src/domain/usecases/GetUpcomingMovies'
+import { useGetPopularMovies } from '@/src/domain/usecases/GetPopularMovies'
+import { useGetNowPlayingMovies } from '@/src/domain/usecases/GetNowPlayingMovies'
 
 const HomeScreen = () => {
     const safeArea = useSafeAreaInsets()
-    const { nowPlayingQuery, popularQuery, topRatedQuery, upcomingQuery } = useMovies()
+    const {data: nowPlayingMovies, isLoading: isLoadingNowPlayingMovies} = useGetNowPlayingMovies()
+    const {data: topMovies, isLoading: isLoadingTopMovies} = useGetTopMovies()
+    const {data: upcomingMovies, isLoading: isLoadingUpcomingMovies} = useGetUpcomingMovies()
+    const {data: popularMovies, isLoading: isLoadingPopularMovies} = useGetPopularMovies()
 
-    if (nowPlayingQuery.isLoading) {
+    if (isLoadingTopMovies) {
         return (
             <View className='justify-center items-center flex-1'>
                 <ActivityIndicator color="purple" size={40} />
@@ -20,21 +24,19 @@ const HomeScreen = () => {
 
     return (
         <ScrollView className='flex-1 bg-gray-900'>
-            <View className='py-6'>
-                <MovieList movies={nowPlayingQuery.data ?? []} />
+            <View className='py-6' /* style={{ paddingTop: safeArea.top }} */>
+                <View className='flex-row justify-between items-center px-4'>
+                    <Text className='text-white text-2xl font-bold'>Movies App</Text>
+                </View>
+
+                <MainMovieCarousel movies={nowPlayingMovies ?? []} />
+
+                <MovieHorizontal title='Top Rated Movies' movies={topMovies ?? []} />
+
+                <MovieHorizontal className='mt-6' title='Popular Movies' movies={popularMovies ?? []} />
+
+                <MovieHorizontal className='mt-6' title='Upcoming Movies' movies={upcomingMovies ?? []} />
             </View>
-
-            {/* <View className='mt-2 pb-10' style={{ paddingTop: safeArea.top }}>
-                <Text className='text-3xl font-bold px-4 mb-2'>Movies App</Text>
-
-                <MainSlideShow movies={nowPlayingQuery.data ?? []}></MainSlideShow>
-
-                <MovieHorizontal title='Populars' movies={popularQuery.data ?? []} className='mb-5'></MovieHorizontal>
-
-                <MovieHorizontal title='Top Rated' movies={topRatedQuery.data ?? []} className='mb-5'></MovieHorizontal>
-
-                <MovieHorizontal title='Upcomming' movies={upcomingQuery.data ?? []} className='mb-5'></MovieHorizontal>
-            </View> */}
         </ScrollView>
     )
 }

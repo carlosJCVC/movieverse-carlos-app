@@ -5,8 +5,27 @@ import { MovieService } from "../services/MovieService";
 export class MovieRepositoryImpl implements MovieRepository {
   constructor(private movieService: MovieService) {}
 
-  async getTopMovies(): Promise<Movie[]> {
-    const movies = await this.movieService.getTopMovies();
+  getUpcomingMovies = async (): Promise<Movie[]> => {
+    const movies = await this.movieService.getUpcomingMovies();
+
     return movies;
-  }
+  };
+
+  getPopularMovies = async (): Promise<Movie[]> => {
+    const movies = await this.movieService.getPopularMovies();
+
+    return movies;
+  };
+
+  getTopRatedMovies = async (): Promise<Movie[]> => {
+    const movies = await this.movieService.getTopRatedMovies();
+
+    return movies;
+  };
+
+  getNowPlayingMovies = async (): Promise<Movie[]> => {
+    const movies = await this.movieService.getNowPlayingMovies();
+
+    return movies;
+  };
 }

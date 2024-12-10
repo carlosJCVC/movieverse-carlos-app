@@ -51,33 +51,6 @@ Join our community of developers creating universal apps.
 
 
 
-
-src/
-├── components/
-│   ├── MovieCard.js
-│   ├── MovieList.js
-│   └── SearchBar.js
-├── pages/
-│   ├── HomeScreen.js
-│   ├── MovieDetailsScreen.js
-│   └── UpcomingScreen.js
-├── services/
-│   ├── MovieService.js
-│   └── SearchService.js
-├── styles/
-│   └── tailwind.config.js
-├── utils/
-│   ├── constants.js
-│   └── helpers.js
-├── navigation/
-│   └── AppNavigator.js
-├── store/
-│   ├── actions.js
-│   ├── reducer.js
-│   └── store.js
-└── App.js
-
-
 src/
 ├── presentation/
 │   ├── components/
@@ -111,3 +84,118 @@ src/
 │   ├── constants.js
 │   └── helpers.js
 └── App.js
+
+
+
+// src/core/di/container.ts
+import "reflect-metadata";
+import { container } from "tsyringe";
+import { MovieRepository } from "@/domain/repositories/MovieRepository";
+import { MovieRepositoryImpl } from "@/infrastructure/repositories/MovieRepositoryImpl";
+import { MovieService } from "@/infrastructure/services/MovieService";
+import { HttpClient } from "@/infrastructure/http/HttpClient";
+
+// Registrar dependencias
+container.register("HttpClient", {
+  useClass: HttpClient
+});
+
+container.register("MovieService", {
+  useClass: MovieService
+});
+
+container.register<MovieRepository>("MovieRepository", {
+  useClass: MovieRepositoryImpl
+});
+
+export { container };
+
+// src/infrastructure/http/HttpClient.ts
+import { injectable } from "tsyringe";
+import axios, { AxiosInstance } from "axios";
+
+@injectable()
+export class HttpClient {
+  private client: AxiosInstance;
+
+  constructor() {
+    this.client = axios.create({
+      baseURL: 'https://api.themoviedb.org/3',
+      params: {
+        api_key: 'YOUR_API_KEY'
+      }
+    });
+  }
+
+  async get<T>(url: string): Promise<T> {
+    const response = await this.client.get<T>(url);
+    return response.data;
+  }
+}
+
+// src/infrastructure/services/MovieService.ts
+import { injectable, inject } from "tsyringe";
+import { Movie } from "@/domain/entities/Movie";
+import { HttpClient } from "../http/HttpClient";
+
+@injectable()
+export class MovieService {
+  constructor(
+    @inject("HttpClient") private httpClient: HttpClient
+  ) {}
+
+  async getTopMovies(): Promise<Movie[]> {
+    const response = await this.httpClient.get<any>('/movie/top_rated');
+    
+    return response.results.map((movie: any) => ({
+      id: movie.id,
+      title: movie.title,
+      poster: `https://image.tmdb.org/t/p/w500${movie.poster_path}`,
+      releaseDate: new Date(movie.release_date),
+      description: movie.overview,
+      vote_average: movie.vote_average
+    }));
+  }
+}
+
+// src/infrastructure/repositories/MovieRepositoryImpl.ts
+import { injectable, inject } from "tsyringe";
+import { Movie } from "@/domain/entities/Movie";
+import { MovieRepository } from "@/domain/repositories/MovieRepository";
+import { MovieService } from "../services/MovieService";
+
+@injectable()
+export class MovieRepositoryImpl implements MovieRepository {
+  constructor(
+    @inject("MovieService") private movieService: MovieService
+  ) {}
+
+  async getTopMovies(): Promise<Movie[]> {
+    return this.movieService.getTopMovies();
+  }
+}
+
+// src/domain/repositories/MovieRepository.ts
+export interface MovieRepository {
+  getTopMovies(): Promise<Movie[]>;
+}
+
+// src/application/hooks/useMovies.ts
+import { container } from "@/core/di/container";
+import { MovieRepository } from "@/domain/repositories/MovieRepository";
+import { useQuery } from "@tanstack/react-query";
+
+export const useGetTopMovies = () => {
+  const movieRepository = container.resolve<MovieRepository>("MovieRepository");
+
+  return useQuery({
+    queryKey: ["movies", "topMovies"],
+    queryFn: () => movieRepository.getTopMovies(),
+    staleTime: 1000 * 60 * 60 * 24, // 24 hours
+  });
+};
+
+// src/index.ts o App.tsx
+import "reflect-metadata";
+import "@/core/di/container";
+// ... resto de tus imports

@@ -1,5 +1,11 @@
 import { Movie } from "@/src/domain/entities/Movie";
 
 export interface MovieRepository {
-  getTopMovies(): Promise<Movie[]>;
+  getUpcomingMovies(): Promise<Movie[]>;
+
+  getPopularMovies(): Promise<Movie[]>;
+
+  getTopRatedMovies(): Promise<Movie[]>;
+
+  getNowPlayingMovies(): Promise<Movie[]>;
 }

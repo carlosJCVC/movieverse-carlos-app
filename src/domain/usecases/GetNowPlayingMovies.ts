@@ -5,10 +5,10 @@ import { MovieService } from "@/src/infrastructure/services/MovieService";
 
 const movieRepository = new MovieRepositoryImpl(new MovieService());
 
-export const useGetTopMovies = () => {
+export const useGetNowPlayingMovies = () => {
   return useQuery<Movie[], Error>({
-    queryKey: ["movies", "topMovies"],
-    queryFn: movieRepository.getTopRatedMovies,
+    queryKey: ["movies", "nowPlaying"],
+    queryFn: movieRepository.getNowPlayingMovies,
     staleTime: 1000 * 60 * 60 * 24, // 24 hours
   });
 };
