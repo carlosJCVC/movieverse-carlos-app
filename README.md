@@ -48,3 +48,66 @@ Join our community of developers creating universal apps.
 
 - [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
 - [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+
+
+
+
+src/
+├── components/
+│   ├── MovieCard.js
+│   ├── MovieList.js
+│   └── SearchBar.js
+├── pages/
+│   ├── HomeScreen.js
+│   ├── MovieDetailsScreen.js
+│   └── UpcomingScreen.js
+├── services/
+│   ├── MovieService.js
+│   └── SearchService.js
+├── styles/
+│   └── tailwind.config.js
+├── utils/
+│   ├── constants.js
+│   └── helpers.js
+├── navigation/
+│   └── AppNavigator.js
+├── store/
+│   ├── actions.js
+│   ├── reducer.js
+│   └── store.js
+└── App.js
+
+
+src/
+├── presentation/
+│   ├── components/
+│   │   ├── MovieCard.js
+│   │   ├── MovieList.js
+│   │   └── SearchBar.js
+│   ├── pages/
+│   │   ├── HomeScreen.js
+│   │   ├── MovieDetailsScreen.js
+│   │   └── UpcomingScreen.js
+│   └── navigation/
+│       └── AppNavigator.js
+├── domain/
+│   ├── entities/
+│   │   └── Movie.js
+│   ├── usecases/
+│   │   ├── GetMovieDetails.js
+│   │   ├── GetUpcomingMovies.js
+│   │   └── SearchMovies.js
+│   └── repositories/
+│       └── MovieRepository.js
+├── data/
+│   ├── services/
+│   │   ├── MovieService.js
+│   │   └── SearchService.js
+│   └── repositories/
+│       └── MovieRepositoryImpl.js
+├── styles/
+│   └── tailwind.config.js
+├── utils/
+│   ├── constants.js
+│   └── helpers.js
+└── App.js
