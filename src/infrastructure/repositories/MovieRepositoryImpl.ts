@@ -1,24 +1,25 @@
 import { Movie } from "@/src/domain/entities/Movie";
 import { MovieRepository } from "../interfaces/MovieRepository";
 import { MovieService } from "../services/MovieService";
+import { Params } from '../interfaces/Params.interface';
 
 export class MovieRepositoryImpl implements MovieRepository {
   constructor(private movieService: MovieService) {}
 
-  getUpcomingMovies = async (): Promise<Movie[]> => {
-    const movies = await this.movieService.getUpcomingMovies();
+  getUpcomingMovies = async (params: Params): Promise<Movie[]> => {
+    const movies = await this.movieService.getUpcomingMovies(params);
 
     return movies;
   };
 
-  getPopularMovies = async (): Promise<Movie[]> => {
-    const movies = await this.movieService.getPopularMovies();
+  getPopularMovies = async (params: Params): Promise<Movie[]> => {
+    const movies = await this.movieService.getPopularMovies(params);
 
     return movies;
   };
 
-  getTopRatedMovies = async (): Promise<Movie[]> => {
-    const movies = await this.movieService.getTopRatedMovies();
+  getTopRatedMovies = async (params: Params): Promise<Movie[]> => {
+    const movies = await this.movieService.getTopRatedMovies(params);
 
     return movies;
   };

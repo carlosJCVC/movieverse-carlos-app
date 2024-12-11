@@ -9,12 +9,12 @@ import { useGetNowPlayingMovies } from '@/src/domain/usecases/GetNowPlayingMovie
 
 const HomeScreen = () => {
     const safeArea = useSafeAreaInsets()
-    const {data: nowPlayingMovies, isLoading: isLoadingNowPlayingMovies} = useGetNowPlayingMovies()
-    const {data: topMovies, isLoading: isLoadingTopMovies} = useGetTopMovies()
-    const {data: upcomingMovies, isLoading: isLoadingUpcomingMovies} = useGetUpcomingMovies()
-    const {data: popularMovies, isLoading: isLoadingPopularMovies} = useGetPopularMovies()
+    const { data: nowPlayingMovies, isLoading: isLoadingNowPlayingMovies } = useGetNowPlayingMovies()
+    const topMoviesQuery = useGetTopMovies()
+    const upcomingMoviesQuery = useGetUpcomingMovies()
+    const popularMoviesQuery = useGetPopularMovies()
 
-    if (isLoadingTopMovies) {
+    if (isLoadingNowPlayingMovies) {
         return (
             <View className='justify-center items-center flex-1'>
                 <ActivityIndicator color="purple" size={40} />
@@ -31,11 +31,28 @@ const HomeScreen = () => {
 
                 <MainMovieCarousel movies={nowPlayingMovies ?? []} />
 
-                <MovieHorizontal title='Top Rated Movies' movies={topMovies ?? []} />
+                <MovieHorizontal
+                    title='Top Rated Movies'
+                    movies={topMoviesQuery.data?.pages.flat() ?? []}
+                    loadNextPage={topMoviesQuery.fetchNextPage}
+                    isFetchingNextPage={topMoviesQuery.isFetchingNextPage}
+                />
 
-                <MovieHorizontal className='mt-6' title='Popular Movies' movies={popularMovies ?? []} />
+                <MovieHorizontal
+                    className='mt-6'
+                    title='Popular Movies'
+                    movies={popularMoviesQuery.data?.pages.flat() ?? []}
+                    loadNextPage={popularMoviesQuery.fetchNextPage}
+                    isFetchingNextPage={popularMoviesQuery.isFetchingNextPage}
+                />
 
-                <MovieHorizontal className='mt-6' title='Upcoming Movies' movies={upcomingMovies ?? []} />
+                <MovieHorizontal
+                    className='mt-6'
+                    title='Upcoming Movies'
+                    movies={upcomingMoviesQuery.data?.pages.flat() ?? []}
+                    loadNextPage={upcomingMoviesQuery.fetchNextPage}
+                    isFetchingNextPage={upcomingMoviesQuery.isFetchingNextPage}
+                />
             </View>
         </ScrollView>
     )
