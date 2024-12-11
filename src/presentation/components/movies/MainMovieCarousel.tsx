@@ -2,6 +2,7 @@ import { View, useWindowDimensions } from 'react-native'
 import { Movie } from '@/src/infrastructure/interfaces'
 import MovieCard from './MovieCard'
 import Carousel from 'react-native-reanimated-carousel'
+import { router } from 'expo-router';
 
 interface Props {
     movies: Movie[];
@@ -22,7 +23,7 @@ const MainMovieCarousel = ({ movies }: Props) => {
                     }}>
                         <MovieCard
                             movie={item}
-                            onPress={() => console.log('Movie pressed:', item.title)}
+                            onPress={() => router.push(`/movie/${item.id}`)}
                         ></MovieCard>
                     </View>
                 )}

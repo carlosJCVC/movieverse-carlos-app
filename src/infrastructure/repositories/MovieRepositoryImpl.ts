@@ -1,4 +1,4 @@
-import { Movie } from "@/src/domain/entities/Movie";
+import { Movie, MovieDetails } from "@/src/domain/entities/Movie";
 import { MovieRepository } from "../interfaces/MovieRepository";
 import { MovieService } from "../services/MovieService";
 import { Params } from '../interfaces/Params.interface';
@@ -28,5 +28,11 @@ export class MovieRepositoryImpl implements MovieRepository {
     const movies = await this.movieService.getNowPlayingMovies();
 
     return movies;
+  };
+
+  getMovieById = async (id: number|string): Promise<MovieDetails> => {
+    const movie = await this.movieService.getMovieById(id);
+
+    return movie;
   };
 }

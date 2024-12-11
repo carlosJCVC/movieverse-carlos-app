@@ -3,6 +3,7 @@ import { Movie } from '@/src/domain/entities/Movie'
 import { Ionicons } from '@expo/vector-icons'
 import { formatCompactNumber } from '@/src/utils'
 import { memo } from 'react'
+import { router } from 'expo-router'
 
 interface Props {
   movie: Movie
@@ -10,7 +11,10 @@ interface Props {
 
 const MoviePosterCard = ({ movie }: Props) => {
   return (
-    <Pressable className={`active:opacity-90`}>
+    <Pressable
+      className={`active:opacity-90`}
+      onPress={() => router.push(`/movie/${movie.id}`)}
+    >
       <View className='relative rounded-lg overflow-hidden'>
         <Image
           source={{ uri: movie.poster }}

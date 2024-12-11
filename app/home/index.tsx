@@ -26,7 +26,7 @@ const HomeScreen = () => {
         <ScrollView className='flex-1 bg-gray-900'>
             <View className='py-6' /* style={{ paddingTop: safeArea.top }} */>
                 <View className='flex-row justify-between items-center px-4'>
-                    <Text className='text-white text-2xl font-bold'>Movies App</Text>
+                    <Text className='text-white text-2xl font-bold'>MovieVerse CJ</Text>
                 </View>
 
                 <MainMovieCarousel movies={nowPlayingMovies ?? []} />

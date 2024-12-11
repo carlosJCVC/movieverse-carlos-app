@@ -2,6 +2,8 @@ export const formatCompactNumber = (
   number: number,
   maximumFractionDigits: number = 1
 ): string => {
+  if (number === 0) return "0.00";
+
   const suffixes = ["", "K", "M", "B", "T"];
   let tier = Math.floor(Math.log10(Math.abs(number)) / 3);
 

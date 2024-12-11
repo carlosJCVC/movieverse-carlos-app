@@ -12,3 +12,11 @@ export interface Movie {
   voteAverage: number;
   voteCount: number;
 }
+
+export interface MovieDetails extends Movie {
+  genres: string[];
+  duration: number;
+  budget: number;
+  revenue: number;
+  productionCompanies: string[]
+}
