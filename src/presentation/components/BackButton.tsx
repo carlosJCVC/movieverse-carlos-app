@@ -1,5 +1,5 @@
 import { Ionicons } from '@expo/vector-icons';
-import { View, Text, TouchableOpacity } from 'react-native'
+import { TouchableOpacity } from 'react-native'
 
 interface Props {
   onPress?: () => void;
@@ -7,7 +7,7 @@ interface Props {
 
 const BackButton = ({ onPress }: Props) => {
   return (
-    <TouchableOpacity onPress={onPress} className='bg-gray-900/70 p-2 rounded-full'>
+    <TouchableOpacity onPress={onPress} className='bg-black/30 p-3 rounded-full backdrop-blur-md'>
       <Ionicons name='arrow-back' size={24} color="white"></Ionicons>
     </TouchableOpacity>
   )

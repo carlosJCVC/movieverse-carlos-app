@@ -3,29 +3,11 @@ import { router, useLocalSearchParams } from 'expo-router'
 import { useGetMovieById } from '@/src/domain/usecases/GetMovieById'
 import { MovieDetailHeader } from '@/src/presentation/components/organisms/MovieDetailHeader';
 import MovieDetailContent from '@/src/presentation/components/organisms/MovieDetailContent';
-import { useRef } from 'react';
-
-const { height: screenHeight } = Dimensions.get('window')
-const HEADER_HEIGHT = screenHeight * 0.7  // Altura del header con la imagen
-const SCROLL_DISTANCE = HEADER_HEIGHT - 50 // Distancia que se colapsará
 
 //  "Sticky Header Pattern" o "Collapsible Header"
 const MovieScreen = () => {
   const { id } = useLocalSearchParams()
   const { data: movie, isLoading } = useGetMovieById(+id)
-  const scrollY = useRef(new Animated.Value(0)).current;
-
-  const headerTranslateY = scrollY.interpolate({
-    inputRange: [0, SCROLL_DISTANCE],
-    outputRange: [0, -SCROLL_DISTANCE],
-    extrapolate: 'clamp'
-  })
-
-  const headerOpacity = scrollY.interpolate({
-    inputRange: [0, SCROLL_DISTANCE / 2, SCROLL_DISTANCE],
-    outputRange: [1, 0.5, 0],
-    extrapolate: 'clamp'
-  })
 
   if (isLoading || !movie) {
     return (
@@ -50,7 +32,7 @@ const MovieScreen = () => {
           onBack={() => router.back()}
         />
 
-        <View className='px-5 -mt-32'>
+        <View className='px-5 -mt-20'>
           <MovieDetailContent movie={movie} />
         </View>
       </ScrollView>
